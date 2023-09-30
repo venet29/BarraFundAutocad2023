@@ -1,0 +1,166 @@
+﻿
+        Dim tabla As New System.Data.DataTable
+        tabla.Columns.Add("nivel", GetType(String))
+        tabla.Columns.Add("coor_z", GetType(Double))
+  tabla.Rows.Add(f2, split(1))
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+
+
+Application.ShowAlertDialog("numero_barras : " & numero_barras)
+
+#Region "CAMBIAR DIAMETRO"
+
+#End Region
+
+    Dim split_ As String() = mat_fierro.GetValue(j)(8).Split(New [Char]() {","c, CChar(vbTab)})
+
+       Dim hatch As Hatch = TryCast(tr.GetObject(prRes.ObjectId, OpenMode.ForRead), Hatch)
+       Dim btr As BlockTableRecord = TryCast(tr.GetObject(hatch.OwnerId, OpenMode.ForWrite), BlockTableRecord)
+
+	               'Try
+
+            'Catch ex As Exception
+
+            'End Try
+
+
+
+			Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
+            Application.DocumentManager.MdiActiveDocument.Editor.Regen()
+
+			   My1Commands.myPalette.cbx_tipo_traslapo.Text = "funciono"
+
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+poligono = poligono.Replace(" "c, String.Empty)
+
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+		     Dim max_fundacion() As DataRow = dttabla.Select("Tipo='FUNDACIONES' AND Orientacion='Horizontal' AND x2_orig=MAX(x2_orig)", "y1 ASC")
+			 
+		     Dim rows_pier() As DataRow = dtdatos4.Select("Story='" & dtdatos4(Pos_dtrow)(0) & "' and Pier LIKE '%" & split_pier(0) & "-" & split_pier(1) & "%'", "X1 ASC")
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	            Dim LaPosicion2 As String = String.Empty
+            Dim dr2 As DataRow = ds4.Tables("Table").Select("X1 <= 1500")(0)
+
+			     If Not IsNothing(dr2) Then
+				  LaPosicion2 = ds4.Tables("Table").Rows.IndexOf(dr2)
+				 endif
+           
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	    InStr(1, valor_Celda, "*")
+		InStr(1, diametro, "*") <> "0"
+		   Dim Min2x() As DataRow = dttabla.Select("x2=MIN(x2)")
+
+
+
+		   'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+		   ' agergar elemnto a grupo existente
+
+			Dim ents As ObjectIdCollection = New ObjectIdCollection()
+		    Dim acObjId_grup As ObjectId()
+			 acObjId_grup = buscar_grupo(id)
+			     For Each idObj As ObjectId In acObjId_grup
+              
+                    ents.Add(idObj)
+					next
+               agregar_borrar_grupo(ents, nombre_grupo_, "B") 
+
+
+
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+  Dim values_izq_bajo(1) As Point3d
+     values_izq_bajo(0) = New Point3d(pto_base.X, pto_base.Y - increment, 0.0)
+     values_izq_bajo(1) = New Point3d(pto_base.X, pto_base.Y, 0.0)
+
+	         Dim acTypValAr(4) As TypedValue
+            acTypValAr.SetValue(New TypedValue(DxfCode.Start, "LINE"), 0)
+            acTypValAr.SetValue(New TypedValue(DxfCode.Operator, "<or"), 1)
+            acTypValAr.SetValue(New TypedValue(DxfCode.LayerName, "CAJA"), 2)
+            acTypValAr.SetValue(New TypedValue(DxfCode.LayerName, "FUNDACIONES"), 3)
+            acTypValAr.SetValue(New TypedValue(DxfCode.Operator, "or>"), 4)
+
+            ' Asignar el criterio de seleccion al objeto SelectionFilter
+            Dim acSelFtr As SelectionFilter = New SelectionFilter(acTypValAr)
+
+            ' Solicitar al usuario que seleccione objetos en el área de dibujo
+
+            Dim Fence_izq As New Point3dCollection(values_izq_bajo)
+            Dim acSSPrompt_izq As PromptSelectionResult = acDocEd.SelectFence(Fence_izq, acSelFtr)
+
+
+-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+ Zoom a la extension o limites del dibujo
+            acDoc.SendStringToExecute("._zoom _all ", True, False, False)
+
+
+
+
+
+
+			    Dim osmode_ini As Integer = Application.GetSystemVariable("PICKSTYLE")
+                Application.SetSystemVariable("PICKSTYLE", 0)
+          
+                Application.SetSystemVariable("PICKSTYLE", osmode_ini)
+
+
+
+				Dim osmode_ini As Integer = Application.GetSystemVariable("OSMODE")
+                Application.SetSystemVariable("OSMODE", 0)
+           
+                Application.SetSystemVariable("OSMODE", osmode_ini)
+
+
+				  If tipo_barra_refe(9) = "izq" Or tipo_barra_refe(9) = "dere" Then
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+				                      Dim pMin As Point3d
+                    Dim pMax As Point3d
+                    Using acView As ViewTableRecord = acDoc.Editor.GetCurrentView()
+                        pMin = New Point3d(Application.GetSystemVariable("viewctr").X - (acView.Width / 2), Application.GetSystemVariable("viewctr").Y - (acView.Height / 2), 0)
+                        pMax = New Point3d((acView.Width / 2) + Application.GetSystemVariable("viewctr").X, (acView.Height / 2) + Application.GetSystemVariable("viewctr").Y, 0)
+                    End Using
+
+					     Zoom(pMin, pMax, New Point3d(), 1)
+                            Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
+                            Application.DocumentManager.MdiActiveDocument.Editor.Regen()
+
+
+
+							xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+							texto.Replace(" "c, String.Empty)
+
+							       Replace(acEnt.TextString, "%%c", ",")
+
+
+
+
+'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ByRef entidad As Entity
+			If entidad.ObjectId.ObjectClass.DxfName.ToString = "LINE" Then
+
+
+            Else
+
+
+            End If
+
+
+			   Dim bt As BlockTable = DirectCast(tr.GetObject(db.BlockTableId, OpenMode.ForRead), BlockTable)
+               Dim ms As BlockTableRecord = DirectCast(tr.GetObject(bt(BlockTableRecord.ModelSpace), OpenMode.ForWrite), BlockTableRecord)
+			   Dim id As ObjectId = ms.AppendEntity(entidad)
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+         Dim coordenada_PTO_(1) As Point3d
+        coordenada_PTO_ = coordenada_modificar(enty, pt1, pt2)    ' OBTENER P1 Y P2 ORDENADOS
+
+		DIM ANGLE  AS DOUBLE = coordenada__angulo_p1_p2(pt1, pt2)
