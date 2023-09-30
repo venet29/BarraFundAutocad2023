@@ -18,6 +18,8 @@ Public Class M1
     Public espac_borde As Single = 3.5
     'Public cots As String = "\\SERVER-CDV\Dibujo\Proyectos\BIBLIOTECA\"
     Public cots As String = "C:\\"
+    Public RutaBAseBlockes As String = "C:\Program Files\"
+
     Public Shared grupo_referencia As String = "*A2867"
     'Public cots As String = "C:\"
     Dim db As New Database(False, True)
@@ -387,9 +389,6 @@ Public Class M1
                         Else
                             fundacion_.dibujar_texto_bloque_fund(pt2.X - Cos(ANGLE) * 20, pt2.Y - Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.largo_barra_real_fun, texto_cuantia, fundacion_.largo_barra_parcial_fun)
                         End If
-
-
-
 
                     ElseIf dt_tabla.Rows.Count = 0 Then
                         GoTo salto2
@@ -955,7 +954,6 @@ salto1:
                         MsgBox("Insertar bloque de texto '_SCAD_CUANTIA_FUND_NH2' ", vbCritical)
                         GoTo final2
                     End If
-
 
                 End If
                 acTrans.Commit()
