@@ -977,26 +977,17 @@ salto1:
                 Using tr As Transaction = db.TransactionManager.StartTransaction()
 
                     Dim l As Polyline = DirectCast(tr.GetObject(res1.ObjectId, OpenMode.ForRead), Polyline)
-                    ' Dim ent As Entity = DirectCast(tr.GetObject(l.ObjectId, OpenMode.ForWrite), Entity)
-                    ' Dim cur As Curve = TryCast(ent, Curve)
-
                     Dim pto_selec_mouse As Point3d = l.GetClosestPointTo(res1.PickedPoint, False)
-
                     Dim REAC_PLANTA As New CODIGOS_DATOS()
-
                     Dim ss As Polyline = TryCast(tr.GetObject(res1.ObjectId, OpenMode.ForWrite), Polyline)
 
                     Dim tipo_barra(9) As String
                     REAC_PLANTA.getData_PROG2(ss, tipo_barra, False)
                     Dim split_2 As String() = tipo_barra(7).Split(New [Char]() {"@"c, "_"c, CChar(vbTab)})
-
-
                     Dim datos_losa2() As String
                     datos_losa2 = utiles_aux.TIPO_caso_BARRA_LOSA_ind_fund(ss, "f16", tipo_barra)
 
-
-
-                    Dim ptoini_rangoOriginal As New Point3d
+                    Dim ptoIni_rangoOriginal As New Point3d
                     Dim ptoFin_rangoOriginal As New Point3d
                     'borrar
                     Dim _planta_agrupa As New CODIGOS_GRUPOS()
@@ -1018,10 +1009,10 @@ salto1:
                             'Dim excur As Entity = tr.GetObject(idObj, OpenMode.ForWrite)
                             Dim acEnt_barra_aux As Dimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Dimension)
                             Dim acEnt_barra_aux2 As RotatedDimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), RotatedDimension)
-                            ptoini_rangoOriginal = acEnt_barra_aux2.XLine1Point
+                            ptoIni_rangoOriginal = acEnt_barra_aux2.XLine1Point
                             ptoFin_rangoOriginal = acEnt_barra_aux2.XLine2Point
 
-                            Dim acPoly3 As Polyline = FUNDACION_.dibujar_barra_fund(acObjIdColl_borra_ss, New Point2d(ptoini_rangoOriginal.X, ptoini_rangoOriginal.Y), New Point2d(ptoFin_rangoOriginal.X, ptoFin_rangoOriginal.Y), "BARRAS")
+                            Dim acPoly3 As Polyline = FUNDACION_.dibujar_barra_fund(acObjIdColl_borra_ss, New Point2d(ptoIni_rangoOriginal.X, ptoIni_rangoOriginal.Y), New Point2d(ptoFin_rangoOriginal.X, ptoFin_rangoOriginal.Y), "BARRAS")
 
                             Dim excur As Entity = tr.GetObject(acPoly3.ObjectId, OpenMode.ForWrite)
                             Dim pts As New Point3dCollection()
@@ -1058,7 +1049,7 @@ salto1:
                             Dim acEnt_barra_aux As Dimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Dimension)
                             Dim acEnt_barra_aux2 As RotatedDimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), RotatedDimension)
 
-                            ptoini_rangoOriginal = acEnt_barra_aux2.XLine1Point
+                            ptoIni_rangoOriginal = acEnt_barra_aux2.XLine1Point
                             ptoFin_rangoOriginal = acEnt_barra_aux2.XLine2Point
 
                             acEnt_barra_aux.Erase()
@@ -1097,13 +1088,16 @@ salto1:
 
                     Dim angulobarra3 As Single = utiles_aux.coordenada__angulo_p1_p2_fun(New Point3d(ptoini_barraOriginal.X, ptoini_barraOriginal.Y, 0), New Point3d(ptofin_barraOriginal.X, ptofin_barraOriginal.Y, 0), ed, Nothing)
                     Dim direcion_pfin_Ini_BARRA As Point3d = utiles_aux.NormalizeDifference(ptoini_barraOriginal, ptofin_barraOriginal)
-                    Dim direcion_pfin_ini_RANGO As Point3d = utiles_aux.NormalizeDifference(ptoini_rangoOriginal, ptoFin_rangoOriginal)
+                    Dim direcion_pfin_ini_RANGO As Point3d = utiles_aux.NormalizeDifference(ptoIni_rangoOriginal, ptoFin_rangoOriginal)
 
 
                     Dim delta_nose As Single = 10 ' este delta se imcopora pq tenai agerga 5 cm a cada lado al crea traslapo, no se pq¡¡¡¡, entonces se agrega delta=0
 
-
                     pto_selec_mouse = utiles_aux.InterseccionPerpendicular(pto_selec_mouse, ptoini_barraOriginal, ptofin_barraOriginal)
+
+                    Dim distancia_ptoFinRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoFin_rangoOriginal)
+                    Dim distancia_ptoIniRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoIni_rangoOriginal)
+
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     '' Dim delta_x, delta_y As Single
                     'If datos_losa2(2) = "horizontal_i" Or datos_losa2(2) = "horizontal_d" Then
@@ -1226,46 +1220,45 @@ salto1:
 
 
                     ' largo de la busqueda desde el pto
-                    Dim largoBusqueda As Integer = 4
+                    Dim largoBusqueda As Integer = 0
                     ' barra inferior o mas ala izq   (pto fin pt con y menor o x menor)
 
 
                     Dim LArgo As Double = utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0 + delta_nose
-                    Dim ptoini3_NuevaBarra1 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)  ' New Point3d(pt1.X + Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), pt1.Y + Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), 0)
-                    Dim ptofin3_NuevaBarra1 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo) '   New Point3d(ptofin3.X - Cos(angulobarra3) * largoBusqueda, ptofin3.Y - Sin(angulobarra3) * largoBusqueda, 0)
+                    Dim ptoini3_NuevaBarra1 As Point3d = ptoini_barraOriginal.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)  ' New Point3d(pt1.X + Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), pt1.Y + Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), 0)
+                    Dim ptofin3_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo) '   New Point3d(ptofin3.X - Cos(angulobarra3) * largoBusqueda, ptofin3.Y - Sin(angulobarra3) * largoBusqueda, 0)
 
 
-                    _currentPoint_aux = New Point3d((ptofin_barraOriginal.X + ptoini3_NuevaBarra1.X) / 2, (ptofin_barraOriginal.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
+                    Dim PuntoMedio_NuevaBarra1 = New Point3d((ptofin3_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin3_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
 
 
-                    Dim ptoInicial_Rango1 As New Point3d
-                    Dim ptoFinal_Rango1 As New Point3d
+                    Dim ptoInicial_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
+                    Dim ptoFinal_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
                     Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
-                    If Abs(ptofin_barraOriginal.X - ptoini3_NuevaBarra1.X) < 0.1 Then   ' vertical
-                        If pto1_Interseccion_Rango_barra.Y > _currentPoint_aux.Y Then
-                            ptoInicial_Rango1 = New Point3d(ptoini_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                            ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                        Else
-                            ptoInicial_Rango1 = New Point3d(ptoini_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                            ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                        End If
+                    'If Abs(ptofin_barraOriginal.X - ptoini3_NuevaBarra1.X) < 0.1 Then   ' vertical
+                    '    If pto1_Interseccion_Rango_barra.Y > _currentPoint_aux.Y Then
+                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
+                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
+                    '    Else
+                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
+                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
+                    '    End If
 
-                        'xline1_tp_n1 = New Point3d(xline1_tp.X, xline1_tp.Y, 0)
-                        'xline2_tp_n1 = New Point3d(xline2_tp.X, xline2_tp.Y, 0)
-                    Else ' horizontal o inclinado
 
-                        If pto1_Interseccion_Rango_barra.X > _currentPoint_aux.X Then
-                            ptoInicial_Rango1 = New Point3d(ptoini_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                            ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                        Else
-                            ptoInicial_Rango1 = New Point3d(ptoini_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                            ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                        End If
+                    'Else ' horizontal o inclinado
 
-                    End If
+                    '    If pto1_Interseccion_Rango_barra.X > _currentPoint_aux.X Then
+                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
+                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
+                    '    Else
+                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
+                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
+                    '    End If
 
-                    aux__barra_manual(ptofin3_NuevaBarra1, ptoini3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.punto_cua_losa,
+                    'End If
+
+                    aux__barra_manual(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.punto_cua_losa,
                                       tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1355,55 +1348,22 @@ salto1:
                     'End If
                     FUNDACION_.punto_cua_losa = tipo_losa_f(0)
 
+                    Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
-                    ' barra superior o mas a la derecha   (pto fin pt con y menor o x menor)
-                    'ptoini3_aux = New Point3d(ptoini3.X + Cos(angulobarra3) * largoBusqueda + Sin(angulobarra3) * 5, ptoini3.Y + Sin(angulobarra3) * largoBusqueda - Cos(angulobarra3) * 5, 0)
-                    'ptofin3_aux = New Point3d(pt1.X - Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose) + Sin(angulobarra3) * 5, pt1.Y - Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose) - Cos(angulobarra3) * 5, 0)
+                    Dim ptofin3_NuevaBarra2 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    ptofin3_NuevaBarra2 = ptofin3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
+                    Dim PuntoMedio_NuevaBarra2 = New Point3d((ptofin3_NuevaBarra2.X + ptoini3_NuevaBarra2.X) / 2, (ptofin3_NuevaBarra2.Y + ptoini3_NuevaBarra2.Y) / 2, 0)
 
-                    ptoini3_NuevaBarra1 = ptoini_barraOriginal.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)  ' New Point3d(pt1.X + Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), pt1.Y + Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), 0)
-                    ptofin3_NuevaBarra1 = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo) '   New Point3d(ptofin3.X - Cos(angulobarra3) * largoBusqueda, ptofin3.Y - Sin(angulobarra3) * largoBusqueda, 0)
-
-                    ptoini3_NuevaBarra1 = New Point3d(ptoini3_NuevaBarra1.X + Sin(angulobarra3) * 5, ptoini3_NuevaBarra1.Y - Cos(angulobarra3) * 5, 0)
-                    ptofin3_NuevaBarra1 = New Point3d(ptofin3_NuevaBarra1.X + Sin(angulobarra3) * 5, ptofin3_NuevaBarra1.Y - Cos(angulobarra3) * 5, 0)
-
-
+                    Dim ptoInicial_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
+                    Dim ptoFinal_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
+                    Dim dista_d2 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
 
-                    _currentPoint_aux = New Point3d((ptofin3_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin3_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
+                    aux__barra_manual(ptofin3_NuevaBarra2, ptoini3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.punto_cua_losa,
+                                      tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
 
-                    dista_d1 = _currentPoint_aux.DistanceTo(ptoini3_NuevaBarra1)
-                    Dim xline1_tp_n2 As New Point3d
-                    Dim xline2_tp_n2 As New Point3d
-
-                    If Abs(ptofin_barraOriginal.X - ptoini3_NuevaBarra1.X) < 0.1 Then   ' vertical
-
-                        If ptoini3_NuevaBarra1.Y > _currentPoint_aux.Y Then
-                            xline1_tp_n2 = New Point3d(ptoini_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                            xline2_tp_n2 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                        Else
-                            xline1_tp_n2 = New Point3d(ptoini_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                            xline2_tp_n2 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                        End If
-
-                        'xline1_tp_n2 = New Point3d(xline1_tp.X, xline1_tp.Y, 0)
-                        'xline2_tp_n2 = New Point3d(xline2_tp.X, xline2_tp.Y, 0)
-                    Else ' horizontal o inclinado
-
-                        If ptoini3_NuevaBarra1.X > _currentPoint_aux.X Then
-                            xline1_tp_n2 = New Point3d(ptoini_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                            xline2_tp_n2 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                        Else
-                            xline1_tp_n2 = New Point3d(ptoini_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoini_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                            xline2_tp_n2 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                        End If
-
-                    End If
-                    'FUNDACION_.punto_cua_losa = tipo_barra(1) & "a" & tipo_barra(8)
-
-                    aux__barra_manual(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, xline1_tp_n2, xline2_tp_n2, FUNDACION_.punto_cua_losa, tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
-
-                    ' aux__barra_manual2(New Point3d(ptoini3_aux.X, ptoini3_aux.Y, 0), New Point3d(ptofin3.X, ptofin3.Y, 0), xline1_tp_n2, xline2_tp_n2, "%%c" & tipo_barra(1) & "a" & tipo_barra(8), tipo_direccion, tipo_losa)
 
                     utiles_aux.Zoom(pMin, pMax, New Point3d(), 1)
                     Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
