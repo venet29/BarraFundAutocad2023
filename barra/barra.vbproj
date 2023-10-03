@@ -92,10 +92,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\_DLL\AcMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AUX_FUNDACIONES, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AUX_FUNDACIONES\bin\Release\AUX_FUNDACIONES.dll</HintPath>
-    </Reference>
     <Reference Include="aux_planta">
       <HintPath>..\..\..\..\PLANTA\XXX) barra -XX-XX-XXXX -MODIFCANDO\barra\barra\bin\Release\aux_planta.dll</HintPath>
     </Reference>
@@ -248,6 +244,12 @@
     <Analyzer Include="C:\ObjectARX 2018\inc\AcCui.dll" />
     <Analyzer Include="C:\ObjectARX 2018\inc\AcDbMgd.dll" />
     <Analyzer Include="C:\ObjectARX 2018\inc\AcMgd.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FUND_C\FUND_C.csproj">
+      <Project>{da69b615-06e2-496e-a116-681b93bb8d8b}</Project>
+      <Name>FUND_C</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

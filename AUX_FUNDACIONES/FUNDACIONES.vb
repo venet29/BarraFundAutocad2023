@@ -412,8 +412,6 @@ Public Class FUNDACIONES
                 acEnt_barra_aux.AddVertexAt(2, New Point2d(pts2_v.X, pts2_v.Y), 0, 0, 0)
                 acEnt_barra_aux.AddVertexAt(3, New Point2d(pts2_v.X - Sin(ANGLE) * (e1 + delta_aux2), pts2_v.Y + Cos(ANGLE) * (e1 + delta_aux2)), 0, 0, 0)
 
-
-
                 'acEnt_barra_aux.SetPointAt(0, New Point2d(pts2_v.X - Cos(ANGLE) * (delta0 + delta1 / 2) - Sin(ANGLE) * e1, pts2_v.Y - Sin(ANGLE) * (delta0 + delta1 / 2) + Cos(ANGLE) * e1))
                 'acEnt_barra_aux.SetPointAt(1, New Point2d(pts2_v.X - Cos(ANGLE) * (delta0 + delta1 / 2), pts2_v.Y - Sin(ANGLE) * (delta0 + delta1 / 2)))
                 'acEnt_barra_aux.AddVertexAt(2, New Point2d(pts1_v.X + Cos(ANGLE) * delta1 / 2, pts1_v.Y + Sin(ANGLE) * delta1 / 2), 0, 0, 0)
@@ -562,10 +560,6 @@ Public Class FUNDACIONES
             acCirc.Center = New Point3d(pt_ref.X - Sin(angulo) * espacio, pt_ref.Y + Cos(angulo) * espacio, 0)
             acCirc.Radius = 5
             acCirc.Layer = "0"
-
-
-
-
             ' Añadir el nuevo objeto al registro de la tabla para bloques y a la
             ' transaccion
             acBlkTblRec.AppendEntity(acCirc)
@@ -593,11 +587,7 @@ Public Class FUNDACIONES
         Dim flecha As String = "_SCAD_CUANTIA_FUND_NH"
         ' Iniciar una transaccion
 
-
-
-
         Using acDoc.LockDocument()
-
 
             Using acTrans As Transaction = acCurDb.TransactionManager.StartTransaction()
 
@@ -637,9 +627,6 @@ VOLVER:
                     ents_dt.Add(objId)
 
                     acTrans.AddNewlyCreatedDBObject(acBlkRef, True)
-
-
-
 
                     ' Si el bloque contiene atributos, añadirlos a la referencia a bloque
                     If acBlk.HasAttributeDefinitions Then
@@ -688,30 +675,6 @@ VOLVER:
                             End If
                         Next
                     End If
-                    '--------------------------------------------------------
-                    ' Registrar el evento
-                    'AddHandler acBlkRef.Modified, AddressOf reac_modif_triangulo_diam
-                    '--------------------------------------------------------
-
-
-
-
-                    'Dim acDesBlkRef As BlockReference = DirectCast(acTrans.GetObject(objId, OpenMode.ForWrite), BlockReference)
-
-                    '' acEd.WriteMessage(String.Format("{0}Propiedades de ""{{0}}""{0}", ControlChars.Lf), acBlkRef.Name)
-
-                    '' Obtener la coleccion de propiedades del blpque dinamico
-                    'Dim DynPropsCol As DynamicBlockReferencePropertyCollection = acDesBlkRef.DynamicBlockReferencePropertyCollection
-
-                    '' Obtener la informacion de cada propiedad
-                    'For Each prop As DynamicBlockReferenceProperty In DynPropsCol
-                    '    prop.Value = texto_diam
-                    '    'acEd.WriteMessage(ControlChars.Lf & "  Valor actual: ""{0}""" & ControlChars.Lf, prop.Value)
-                    'Next
-
-
-
-
 
 
                     ' Confirmar los cambios
@@ -787,10 +750,6 @@ VOLVER:
         Return pto_inter
     End Function
 
-
-    ' Public Sub reac_modif_barra(ByVal senderObj As Object, ByVal evtArgs As EventArgs)
-
-
     Public Sub dibujar_texto_pl_reactor(ByRef ents As ObjectIdCollection, ByVal obj_ As ObjectId, ByRef aux_cuatia As String, ByVal AUX_LARGO As String, ByRef AUX_PARCIAL As String)
         Dim Doc As Document = Application.DocumentManager.MdiActiveDocument
         Dim DB As Database = Doc.Database
@@ -812,49 +771,14 @@ VOLVER:
                 For Each idObj As ObjectId In acObjId_grup
                     ' Dim acEnt_aux As Entity = acTrans.GetObject(idObj, OpenMode.ForWrite)
 
-
-
                     If idObj.ObjectClass.DxfName.ToString = "INSERT" Then
-
-                        ' Abrir la tabla de bloques en modo lectura
-                        ' Dim acBlkRef As BlockReference = TryCast(acTrans.GetObject(idObj, OpenMode.ForRead), BlockReference)
-
                         Dim acEnt As BlockReference = tr.GetObject(idObj, OpenMode.ForWrite)
 
                         Dim datos_estribo_valores(4) As String
-
-                        '  Application.ShowAlertDialog("acEnt.BlockName : " & acEnt.Name & "     acEnt.BlockId : " & acEnt.Layer & "    acEnt.BlockName : " & acEnt.Layer)
-
-                        ' If acEnt.Name = "_SCAD_CUANTIA_FUND_NH" Then
-
-
-
                         modificar_bloque_texto_fund(aux_cuatia, AUX_LARGO, AUX_PARCIAL, idObj, ents)
 
-                        'If split_H_(1) = split_V_(1) Then
-                        '    acEnt.Erase()
-                        '    My1Commands.acObjIdColl_GENERAL.Remove(idObj)
-                        '    texto_hatch(texto_coorde, texto_espesor, split_H(0), "", split_H(1), ents, 0)
-
-                        'Else
-
-                        '    acEnt.Erase()
-                        '    My1Commands.acObjIdColl_GENERAL.Remove(idObj)
-                        '    texto_hatch(texto_coorde, texto_espesor, split_V(0), split_V(1), split_H(1), ents, 1)
-
-                        'End If
-                        'End If
-
-
-
                     End If
-
                 Next
-
-
-
-
-
 
                 tr.Commit()
 
@@ -863,10 +787,6 @@ VOLVER:
                 Application.ShowAlertDialog("Error: 'reac_modif_barra_final'" & vbLf & Ex.Message)
             Finally
             End Try
-
-
-
-
 
         End Using
     End Sub
