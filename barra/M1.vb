@@ -1054,17 +1054,6 @@ salto1:
                     Dim distancia_ptoFinRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoFin_rangoOriginal)
                     Dim distancia_ptoIniRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoIni_rangoOriginal)
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    '' Dim delta_x, delta_y As Single
-                    'If datos_losa2(2) = "horizontal_i" Or datos_losa2(2) = "horizontal_d" Then
-                    '    pto_selec_mouse = New Point3d(pto_selec_mouse.X, utiles_aux.datos_lines(ptoini_barraOriginal.X, ptoini_barraOriginal.Y, ptofin_barraOriginal.X, ptofin_barraOriginal.Y, pto_selec_mouse.X, pto_selec_mouse.Y), 0)
-                    '    ' delta_x = 2
-                    '    '   delta_y = 0
-                    'Else
-                    '    pto_selec_mouse = New Point3d(ptoini_barraOriginal.X, pto_selec_mouse.Y, 0)
-                    '    '  delta_x = 0
-                    '    '  delta_y = 2
-                    'End If
 
                     Dim pMin As Point3d
                     Dim pMax As Point3d
@@ -1166,11 +1155,6 @@ salto1:
                     End If
 
 
-                    'If tipo_losa = "f3" Then
-                    '    FUNDACION_.punto_cua_losa = "%%c" & tipo_barra(1) & "a" & tipo_barra(8)
-                    'Else
-                    '    FUNDACION_.punto_cua_losa = tipo_losa_f(0)
-                    'End If
 
                     FUNDACION_.Punto_cua_losa = tipo_losa_f(0)
 
@@ -1192,28 +1176,6 @@ salto1:
                     Dim ptoFinal_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
                     Dim ptoInicial_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
                     Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
-
-                    'If Abs(ptofin_barraOriginal.X - ptoini3_NuevaBarra1.X) < 0.1 Then   ' vertical
-                    '    If pto1_Interseccion_Rango_barra.Y > _currentPoint_aux.Y Then
-                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                    '    Else
-                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                    '    End If
-
-
-                    'Else ' horizontal o inclinado
-
-                    '    If pto1_Interseccion_Rango_barra.X > _currentPoint_aux.X Then
-                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X - dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y - dista_d1 * Sin(angulobarra3), 0)
-                    '    Else
-                    '        ptoInicial_Rango1 = New Point3d(ptoIni_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoIni_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                    '        ptoFinal_Rango1 = New Point3d(ptoFin_rangoOriginal.X + dista_d1 * Cos(angulobarra3), ptoFin_rangoOriginal.Y + dista_d1 * Sin(angulobarra3), 0)
-                    '    End If
-
-                    'End If
 
                     aux__barra_manual(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
                                       tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
@@ -1336,38 +1298,399 @@ final2:
         End Using
     End Sub
 
-    'Private Shared Sub Bloque_InsertarLeaderFundacion()
 
-    '    Dim doc As Document = Application.DocumentManager.MdiActiveDocument
-    '    Dim db As Database = doc.Database
+    Public Sub aux_dtras_fund_original(ByVal txt_recub As String, ByVal ckbx_traslapo As Boolean, ByVal grupo_referencia As String, ByVal casos_dibujar As String, ByRef _contenerdorIDOBJ As ObjectIdCollection)
 
-    '    Using doc.LockDocument()
+        Dim utiles_aux As New utiles
+        Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+        Dim db As Database = doc.Database
+        Dim ed As Editor = doc.Editor
+        Using doc.LockDocument()
+
+            ServicioCargarBlock.Bloque_InsertarLeaderFundacion()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            Dim FUNDACION_ As New FUNDACIONES()
+            Dim acObjIdColl_borra_ss As ObjectIdCollection = New ObjectIdCollection()
+
+            Dim opt1 As New PromptEntityOptions(vbLf & "n1) Seleccionar ubicacion de traslapo:")
+            opt1.SetRejectMessage(vbLf & "error!")
+            opt1.AddAllowedClass(GetType(Polyline), True)
+            Dim res1 As PromptEntityResult = ed.GetEntity(opt1)
+            Dim pto1_Interseccion_Rango_barra As Point3d
 
 
-    '        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    '        'comprobar bloque
-    '        Dim flecha As String = "_SCAD_CUANTIA_FUND_NH2"
-    '        Using acTrans As Transaction = db.TransactionManager.StartTransaction()
+            Dim lista_obj As New List(Of ObjectId)()
 
-    '            ' Abrir la tabla para bloques en modo lectura
-    '            Dim acBlkTbl As BlockTable = acTrans.GetObject(db.BlockTableId, OpenMode.ForRead)
-    '            If Not acBlkTbl.Has(flecha) Then
-    '                'Else
-    '                Dim VARIOS_ As New atributos()
-    '                If File.Exists("C:\Program Files\AutocadNh\_SCAD_CUANTIA_FUND_NH.dwg") Then
-    '                    VARIOS_.InsertBlock("C:\Program Files\AutocadNh\_SCAD_CUANTIA_FUND_NH.dwg", flecha)
-    '                End If
+            If res1.Status = PromptStatus.OK Then
 
-    '                If Not acBlkTbl.Has("_SCAD_CUANTIA_FUND_NH2") Then
-    '                    MsgBox("Insertar bloque de texto '_SCAD_CUANTIA_FUND_NH2' ", vbCritical)
-    '                    ' GoTo final2
-    '                End If
+                Using tr As Transaction = db.TransactionManager.StartTransaction()
 
-    '            End If
-    '            acTrans.Commit()
-    '        End Using
-    '    End Using
-    'End Sub
+                    Dim l As Polyline = DirectCast(tr.GetObject(res1.ObjectId, OpenMode.ForRead), Polyline)
+                    Dim pto_selec_mouse As Point3d = l.GetClosestPointTo(res1.PickedPoint, False)
+                    Dim REAC_PLANTA As New CODIGOS_DATOS()
+                    Dim ss As Polyline = TryCast(tr.GetObject(res1.ObjectId, OpenMode.ForWrite), Polyline)
+
+                    Dim tipo_barra(9) As String
+                    REAC_PLANTA.getData_PROG2(ss, tipo_barra, False)
+                    Dim split_2 As String() = tipo_barra(7).Split(New [Char]() {"@"c, "_"c, CChar(vbTab)})
+                    Dim datos_losa2() As String
+                    datos_losa2 = utiles_aux.TIPO_caso_BARRA_LOSA_ind_fund(ss, "f16", tipo_barra)
+
+                    Dim ptoIni_rangoOriginal As New Point3d
+                    Dim ptoFin_rangoOriginal As New Point3d
+                    'borrar
+                    Dim _planta_agrupa As New CODIGOS_GRUPOS()
+                    Dim ents As ObjectIdCollection = New ObjectIdCollection()
+                    Dim acObjId_grup__ As ObjectId()
+                    acObjId_grup__ = _planta_agrupa.buscar_grupo(res1.ObjectId)
+
+                    If IsNothing(acObjId_grup__) Then
+                        MsgBox("Elemento no agrupado", vbCritical)
+                        GoTo final
+                    End If
+
+
+                    'Dim atributo As New atributos()
+                    'Dim tipo_FUND(9) As String
+                    For Each idObj As ObjectId In acObjId_grup__
+
+                        If idObj.ObjectClass.DxfName.ToString = "DIMENSION" Then
+                            'Dim excur As Entity = tr.GetObject(idObj, OpenMode.ForWrite)
+                            Dim acEnt_barra_aux As Dimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Dimension)
+                            Dim acEnt_barra_aux2 As RotatedDimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), RotatedDimension)
+                            ptoIni_rangoOriginal = acEnt_barra_aux2.XLine1Point
+                            ptoFin_rangoOriginal = acEnt_barra_aux2.XLine2Point
+
+                            Dim acPoly3 As Polyline = FUNDACION_.dibujar_barra_fund(acObjIdColl_borra_ss, New Point2d(ptoIni_rangoOriginal.X, ptoIni_rangoOriginal.Y), New Point2d(ptoFin_rangoOriginal.X, ptoFin_rangoOriginal.Y), "BARRAS")
+
+                            Dim excur As Entity = tr.GetObject(acPoly3.ObjectId, OpenMode.ForWrite)
+                            Dim pts As New Point3dCollection()
+
+                            Dim ent3 As Entity = DirectCast(tr.GetObject(l.ObjectId, OpenMode.ForWrite), Entity)
+                            Dim cur As Curve = TryCast(ent3, Curve)
+
+                            cur.IntersectWith(excur, Intersect.OnBothOperands, pts, 0, 0)
+                            acPoly3.Erase()
+
+                            If pts.Count <> 0 Then
+                                pto1_Interseccion_Rango_barra = New Point3d(pts(0).X, pts(0).Y, 0)
+                                If pts.Count = 2 Then Dim pto2_Interseccion_Rango_barra As Point3d = New Point3d(pts(1).X, pts(1).Y, 0)
+                            Else
+                                MsgBox("No se pudo intersectar barra con reccorido. Deben estar intersectadas para generar traslapo", vbCritical)
+                                Exit Sub
+                            End If
+                        End If
+
+                    Next
+
+                    Dim tipo_losa_f(9) As String
+
+                    For Each idObj As ObjectId In acObjId_grup__
+                        If idObj.ObjectClass.DxfName.ToString = "TEXT" Then
+                            Dim acEnt_barra_aux As DBText = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), DBText)
+                            acEnt_barra_aux.Erase()
+                        ElseIf idObj.ObjectClass.DxfName.ToString = "LWPOLYLINE" Then
+                            _contenerdorIDOBJ.Remove(idObj)
+                            Dim acEnt_barra_aux As Polyline = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Polyline)
+                            acEnt_barra_aux.Erase()
+                        ElseIf idObj.ObjectClass.DxfName.ToString = "DIMENSION" Then
+                            'Dim excur As Entity = tr.GetObject(idObj, OpenMode.ForWrite)
+                            Dim acEnt_barra_aux As Dimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Dimension)
+                            Dim acEnt_barra_aux2 As RotatedDimension = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), RotatedDimension)
+
+                            ptoIni_rangoOriginal = acEnt_barra_aux2.XLine1Point
+                            ptoFin_rangoOriginal = acEnt_barra_aux2.XLine2Point
+
+                            acEnt_barra_aux.Erase()
+                        ElseIf idObj.ObjectClass.DxfName.ToString = "CIRCLE" Then
+                            Dim acEnt_barra_aux As Circle = TryCast(tr.GetObject(idObj, OpenMode.ForWrite), Circle)
+                            acEnt_barra_aux.Erase()
+                        ElseIf idObj.ObjectClass.DxfName.ToString = "INSERT" Then
+                            Dim atributo As New atributos()
+                            atributo.obtener_atributos_funda(idObj, tipo_losa_f)
+                            Dim acEnt_barra_aux As BlockReference = tr.GetObject(idObj, OpenMode.ForWrite)
+                            acEnt_barra_aux.Erase()
+
+                            If tipo_losa_f(0) <> "" Then
+                                Dim split_fund As String() = tipo_losa_f(0).ToLower().Split(New [Char]() {"c"c, "a"c, CChar(vbTab)})
+                                If IsNumeric(split_fund(1)) Then
+                                    tipo_barra(1) = split_fund(1)
+                                Else
+                                    MsgBox("Error al buscar diamtro de cuantia, se utiliza diamtro Interno de barra")
+                                End If
+                            Else
+                                MsgBox("Error al buscar diamtro de cuantia, se utiliza diamtro Interno de barra")
+
+                            End If
+                        End If
+                    Next
+
+                    Dim split_3 As String() = datos_losa2(4).Split(New [Char]() {","c, "_"c, CChar(vbTab)})
+                    Dim ptoini_barraOriginal As Point3d = New Point3d(split_3(0), split_3(1), 0)
+                    Dim ptofin_barraOriginal As Point3d = New Point3d(split_3(2), split_3(3), 0)
+
+                    Dim coordenada_PTO_(1) As Point3d
+
+                    coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, ptoini_barraOriginal, ptofin_barraOriginal)
+                    ptoini_barraOriginal = coordenada_PTO_(0)
+                    ptofin_barraOriginal = coordenada_PTO_(1)
+
+                    Dim angulobarra3 As Single = utiles_aux.coordenada__angulo_p1_p2_fun(New Point3d(ptoini_barraOriginal.X, ptoini_barraOriginal.Y, 0), New Point3d(ptofin_barraOriginal.X, ptofin_barraOriginal.Y, 0), ed, Nothing)
+                    Dim direcion_pfin_Ini_BARRA As Point3d = utiles_aux.NormalizeDifference(ptoini_barraOriginal, ptofin_barraOriginal)
+                    Dim direcion_pfin_ini_RANGO As Point3d = utiles_aux.NormalizeDifference(ptoIni_rangoOriginal, ptoFin_rangoOriginal)
+
+
+                    Dim delta_nose As Single = 10 ' este delta se imcopora pq tenai agerga 5 cm a cada lado al crea traslapo, no se pq¡¡¡¡, entonces se agrega delta=0
+
+                    pto_selec_mouse = utiles_aux.InterseccionPerpendicular(pto_selec_mouse, ptoini_barraOriginal, ptofin_barraOriginal)
+
+                    Dim distancia_ptoFinRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoFin_rangoOriginal)
+                    Dim distancia_ptoIniRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoIni_rangoOriginal)
+
+
+                    Dim pMin As Point3d
+                    Dim pMax As Point3d
+                    Using acView As ViewTableRecord = doc.Editor.GetCurrentView()
+                        pMin = New Point3d(Application.GetSystemVariable("viewctr").X - (acView.Width / 2), Application.GetSystemVariable("viewctr").Y - (acView.Height / 2), 0)
+                        pMax = New Point3d((acView.Width / 2) + Application.GetSystemVariable("viewctr").X, (acView.Height / 2) + Application.GetSystemVariable("viewctr").Y, 0)
+                    End Using
+
+
+                    utiles_aux.Zoom(New Point3d(Min(ptoini_barraOriginal.X, ptofin_barraOriginal.X) - 200, Min(ptoini_barraOriginal.Y, ptofin_barraOriginal.Y) - 200, 0), New Point3d(Max(ptoini_barraOriginal.X, ptofin_barraOriginal.X) + 200, Max(ptoini_barraOriginal.Y, ptofin_barraOriginal.Y) + 200, 0), New Point3d(), 1)
+
+                    utiles_aux.Create_ALayer("BARRAS")
+                    utiles_aux.Create_ALayer("TEXTO")
+                    'FUNDACION_.punto_e_losa_real = split_2(1)
+                    'FUNDACION_.punto_e_losa = split_2(2)
+
+                    Dim _currentPoint_aux As Point3d
+
+                    Dim tipo_losa As String = ""
+                    Dim tipo_direccion As String = ""
+                    If datos_losa2(0) = "f10" Then
+                        tipo_losa = "f11"
+
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_i"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_i"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_direccion = "vertical_b"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_direccion = "vertical_b"
+                        End If
+                    ElseIf datos_losa2(0) = "f11" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_losa = "f11"
+                            tipo_direccion = "horizontal_i"
+
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "horizontal_i"
+
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f11"
+                            tipo_direccion = "vertical_b"
+
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f11"
+                            tipo_direccion = "vertical_b"
+
+                        End If
+
+                    ElseIf datos_losa2(0) = "f3" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_b"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_b"
+                        End If
+                    ElseIf datos_losa2(0) = "f9a" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_b"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_b"
+                        End If
+                    ElseIf datos_losa2(0) = "f9a_V" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_i"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_b"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_b"
+                        End If
+
+                    Else
+
+                        MsgBox("Tipo de barra distinta a la base de datos ", vbCritical)
+                        Exit Sub
+                    End If
+
+
+
+                    FUNDACION_.Punto_cua_losa = tipo_losa_f(0)
+
+
+                    ' largo de la busqueda desde el pto
+                    Dim largoBusqueda As Integer = 0
+                    ' barra inferior o mas ala izq   (pto fin pt con y menor o x menor)
+
+
+                    Dim LArgo As Double = utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0 + delta_nose
+                    Dim ptoini3_NuevaBarra1 As Point3d = ptoini_barraOriginal.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)  ' New Point3d(pt1.X + Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), pt1.Y + Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), 0)
+                    Dim ptofin3_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo) '   New Point3d(ptofin3.X - Cos(angulobarra3) * largoBusqueda, ptofin3.Y - Sin(angulobarra3) * largoBusqueda, 0)
+
+
+                    Dim PuntoMedio_NuevaBarra1 = New Point3d((ptofin3_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin3_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
+
+
+
+                    Dim ptoFinal_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
+                    Dim ptoInicial_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
+                    Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
+
+                    aux__barra_manual(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
+                                      tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    acObjIdColl_borra_ss.Clear()
+
+                    If datos_losa2(0) = "f10" Then
+                        tipo_losa = "f11"
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_d"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_d"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_direccion = "vertical_a"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_direccion = "vertical_a"
+                        End If
+
+                    ElseIf datos_losa2(0) = "f11" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f11"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f11"
+                            tipo_direccion = "vertical_a"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_a"
+                        End If
+                    ElseIf datos_losa2(0) = "f3" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_a"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_a"
+                        End If
+                    ElseIf datos_losa2(0) = "f9a" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_a"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_a"
+                        End If
+
+                    ElseIf datos_losa2(0) = "f9a_V" Then
+                        If datos_losa2(2) = "horizontal_i" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f3"
+                        ElseIf datos_losa2(2) = "horizontal_d" Then
+                            tipo_direccion = "horizontal_d"
+                            tipo_losa = "f9a_V"
+                        ElseIf datos_losa2(2) = "vertical_b" Then
+                            tipo_losa = "f3"
+                            tipo_direccion = "vertical_a"
+                        ElseIf datos_losa2(2) = "vertical_a" Then
+                            tipo_losa = "f9a_V"
+                            tipo_direccion = "vertical_a"
+                        End If
+
+                    Else
+                        MsgBox("Tipo de barra distinta a la base de datos ", vbCritical)
+                        Exit Sub
+                        tipo_losa = datos_losa2(0)
+                    End If
+
+
+                    'If tipo_losa = "f3" Then
+                    '    FUNDACION_.punto_cua_losa = "%%c" & tipo_barra(1) & "a" & tipo_barra(8)
+                    'Else
+                    '    FUNDACION_.punto_cua_losa = tipo_losa_f(0)
+                    'End If
+                    FUNDACION_.Punto_cua_losa = tipo_losa_f(0)
+
+                    Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
+
+                    Dim ptofin3_NuevaBarra2 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    ptofin3_NuevaBarra2 = ptofin3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
+
+                    Dim PuntoMedio_NuevaBarra2 = New Point3d((ptofin3_NuevaBarra2.X + ptoini3_NuevaBarra2.X) / 2, (ptofin3_NuevaBarra2.Y + ptoini3_NuevaBarra2.Y) / 2, 0)
+
+                    Dim ptoFinal_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
+                    Dim ptoInicial_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
+
+                    Dim dista_d2 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
+
+
+                    aux__barra_manual(ptofin3_NuevaBarra2, ptoini3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.Punto_cua_losa,
+                                      tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
+
+
+                    utiles_aux.Zoom(pMin, pMax, New Point3d(), 1)
+                    Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
+                    Application.DocumentManager.MdiActiveDocument.Editor.Regen()
+final:
+
+                    tr.Commit()
+
+                End Using
+            End If
+final2:
+        End Using
+    End Sub
+
 
     Public Sub aux__barra_rango(ByVal txt_recub As String, ByVal casos_dibujar As String)
         ' Obtener el documento y la base de datos actuales
