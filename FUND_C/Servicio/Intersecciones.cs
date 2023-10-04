@@ -30,6 +30,7 @@ namespace FUND_C.Servicio
         public Point3d P1_elementoIntersectado { get; set; }
         public Point3d P2_elementoIntersectado { get; set; }
         public Point3d PuntoIntersecion_menosRecub { get; internal set; }
+        public bool IsOk { get; internal set; }
     }
     public class Intersecciones
     {
@@ -37,12 +38,12 @@ namespace FUND_C.Servicio
 
         public Point3d P1 { get; set; }
         public Point3d P2 { get; set; }
-        public Polyline acPoly { get; set; }
+        // public Polyline acPoly { get; set; }
         public Point3d P2_interseccion { get; set; }
         public Point3d P2_interseccion_menosRecub { get; set; } // distacia menos recubrimiento
         public int LArgoExtension { get; set; }
 
-        public CasoInterssion CosoInterseccion { get; set; }
+        public CasoInterssion CasoInterseccion { get; set; }
         public Entity ent { get; private set; }
 
         private Document acDoc;
@@ -50,18 +51,20 @@ namespace FUND_C.Servicio
         private Database acCurDb;
 
         public List<IntersecionDTo> ListaInterseciones { get; set; }
+
+
         // punto esPunto Busqueda
-        public Intersecciones(Point3d p1, Point3d p2, Polyline acPoly)
+        public Intersecciones(Point3d p1, Point3d p2)
         {
             P1 = p1;
             P2 = p2;
-            this.acPoly = acPoly;
+            // this.acPoly = acPoly;
             LArgoExtension = 10;
             acDoc = Application.DocumentManager.MdiActiveDocument;
             acDocEd = Application.DocumentManager.MdiActiveDocument.Editor;
             acCurDb = acDoc.Database;
-         
-            CosoInterseccion = CasoInterssion.SinInterseccion;
+
+            CasoInterseccion = CasoInterssion.SinInterseccion;
             ListaInterseciones = new List<IntersecionDTo>();
         }
 
@@ -73,27 +76,48 @@ namespace FUND_C.Servicio
             {
                 Point3d direccion_p2_p1 = Util.NormalizeDifference(P1, P2);
                 P2_extendido = P2.Add(direccion_p2_p1.GetAsVector() * LArgoExtension);
-                // var dire = p2 - p3;
-                Line cur = new Line(P1, P2);
-
-                Point3d[] values_sup = new Point3d[2];
-                values_sup[0] = P1;
-                values_sup[1] = P2_extendido;
-
-                TypedValue[] acTypValAr = new TypedValue[5]
+                // Iniciar una transacción
+                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
                 {
+
+                    // Crear una nueva polilínea
+                    Polyline acPoly = new Polyline();
+
+                    // Abrir la tabla de bloques en modo lectura
+                    BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
+
+                    // Abrir el registro del bloque de Espacio Modelo en modo escritura
+                    BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+                    // Establecer las propiedades predeterminadas de la base de datos para la polilínea
+                    acPoly.SetDatabaseDefaults();
+           
+                    // Agregar vértices a la polilínea
+                    acPoly.AddVertexAt(0, new Point2d(P1.X, P1.Y), 0, 0, 0);
+                    acPoly.AddVertexAt(1, new Point2d(P2_extendido.X, P2_extendido.Y), 0, 0, 0);
+                    // Añadir el nuevo objeto al registro de la tabla para bloques y a la transacción
+                    acBlkTblRec.AppendEntity(acPoly);
+                    acTrans.AddNewlyCreatedDBObject(acPoly, true);
+
+                    // Obtener la entidad del ObjectId de la polilínea
+                    Entity ent = (Entity)acTrans.GetObject(acPoly.ObjectId, OpenMode.ForRead);
+                    if (ent == null) return false;
+                    Curve cur = ent as Curve;
+
+                    Point3d[] values_sup = new Point3d[2];
+                    values_sup[0] = P1;
+                    values_sup[1] = P2_extendido;
+
+                    TypedValue[] acTypValAr = new TypedValue[5]
+                    {
                         new TypedValue((int)DxfCode.Operator, "<or"),
                         new TypedValue((int)DxfCode.Start, "LWPOLYLINE"),
                         new TypedValue((int)DxfCode.Start, "LINE"),
                         new TypedValue((int)DxfCode.Operator, "or>"),
                         new TypedValue((int)DxfCode.LayerName, "FUNDACIONES")
-                };
+                    };
 
-                // Iniciar una transacción
-                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
-                {
-               
-          
+
                     SelectionFilter acSelFtr = new SelectionFilter(acTypValAr);
                     PromptSelectionResult acSSPrompt2 = acDocEd.SelectCrossingWindow(values_sup[0], values_sup[1], acSelFtr);
 
@@ -146,7 +170,8 @@ namespace FUND_C.Servicio
                                             distanciaDesdeP1 = P1.DistanceTo(pts[k]),
                                             OBjetoIntersectadoID = acSSObj.ObjectId,
                                             P1_elementoIntersectado = resultPuntoStar,
-                                            P2_elementoIntersectado = resultPuntoEnd
+                                            P2_elementoIntersectado = resultPuntoEnd,
+                                            IsOk= true
                                         };
 
                                         if (ListaInterseciones.Exists(c => Math.Abs(c.distanciaDesdeP1 - newInter.distanciaDesdeP1) < 0.1))
@@ -165,15 +190,22 @@ namespace FUND_C.Servicio
 
                 if (ListaInterseciones.Count == 0)
                 {
-                    CosoInterseccion = CasoInterssion.SinInterseccion;
+                    var newInter = new IntersecionDTo()
+                    {
+                        puntoIntersecion = P2,
+                        distanciaDesdeP1 = P1.DistanceTo(P2),
+                        IsOk = false
+                    };
+                    CasoInterseccion = CasoInterssion.SinInterseccion;
+                    ListaInterseciones.Add(newInter);
                     return false;
                 }
                 else if (ListaInterseciones.Count == 1)
                 {
-                    CosoInterseccion = CasoInterssion.Hay1Interseccion;
+                    CasoInterseccion = CasoInterssion.Hay1Interseccion;
                 }
                 else
-                    CosoInterseccion = CasoInterssion.HayVAriasInterseccon;
+                    CasoInterseccion = CasoInterssion.HayVAriasInterseccon;
 
 
                 P2_interseccion = ListaInterseciones[0].puntoIntersecion;
@@ -183,7 +215,7 @@ namespace FUND_C.Servicio
             catch (Exception ex)
             {
                 Util.ErrorMsg($"Error en 'function'. ex:{ex.Message}");
-                CosoInterseccion = CasoInterssion.ConError;
+                CasoInterseccion = CasoInterssion.ConError;
                 return false;
             }
             return true;
@@ -228,5 +260,9 @@ namespace FUND_C.Servicio
             line1.IntersectWith(line2, Intersect.OnBothOperands, intersectionPoints, IntPtr.Zero, IntPtr.Zero);
             return (intersectionPoints.Count > 0 ? (true, intersectionPoints[0]) : (false, Point3d.Origin));
         }
+
+
+
+
     }
 }

@@ -72,7 +72,7 @@ Public Class M1
             'acDoc.Window.DeviceIndependentLocation = ptDoc
 
 
-            Return
+
             Dim patalargo
 
             Select Case cbx_dia_princiapl
@@ -713,7 +713,9 @@ salto2:
 
 
 
-    Public Sub aux__barra_manual2(ByRef pt As Point3d, ByRef pt2 As Point3d, ByRef pt_rango As Point3d, ByRef pt2_rango As Point3d, ByVal CUANTIA As String, ByVal direccion As String, ByVal tipo As String, ByVal txt_recub_ As String, ByVal rbt_inferior_ As Boolean, ByVal ckbx_traslapo_ As Boolean, ByVal casos_dibujar_ As String, ByVal grupo_referencia_ As String, ByVal recubrimeinto As String)
+    Public Sub aux__barra_manual2(ByRef pt As Point3d, ByRef pt2 As Point3d, ByRef pt_rango As Point3d, ByRef pt2_rango As Point3d, ByVal CUANTIA As String,
+                                  ByVal direccion As String, ByVal tipo As String, ByVal txt_recub_ As String, ByVal rbt_inferior_ As Boolean, ByVal ckbx_traslapo_ As Boolean,
+                                  ByVal casos_dibujar_ As String, ByVal grupo_referencia_ As String, ByVal recubrimeinto As String)
         ' Obtener el documento y la base de datos actuales
         Dim acDoc As Document = Application.DocumentManager.MdiActiveDocument
         Dim acCurDb As Database = acDoc.Database
@@ -790,96 +792,70 @@ salto2:
                 Dim i As Integer = 0
                 Dim fundacion_ As New FUNDACIONES
                 Dim _pto_barra As Point3d
-                ' Si el estado de la solicitud es OK, es que se han seleccionado objetos
-                If tipo <> "f3" Then
 
 
+                ' Recorrer los objetos del conjunto de selección
+                Dim caso_tipo As String = ""
+                Dim pto1_barra As Point2d
+                Dim pto2_barra As Point2d
+                Dim pto1_RANGO As Point2d
+                Dim pto2_RANGO As Point2d
 
+                If tipo = "f10" Or tipo = "f9a" Then
 
-                    ' Recorrer los objetos del conjunto de selección
-
-
-
-
-                    Dim caso_tipo As String = ""
-                    Dim pto1_barra As Point2d
-                    Dim pto2_barra As Point2d
-                    Dim pto1_RANGO As Point2d
-                    Dim pto2_RANGO As Point2d
-
-                    If tipo = "f10" Or tipo = "f9a" Then
-
-                        coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, pt, pt2)    ' OBTENER P1 Y P2 ORDENADOS
-                        pt = coordenada_PTO_(0)
-                        pt2 = coordenada_PTO_(1)
-
-
-                        pto1_barra = New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto)
-                        pto2_barra = New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto)
-                        fundacion_.modificar_barra_FUNDA(ents, ent, pto1_barra, pto2_barra, tipo, "", 18, 15)
-
-
-                        fundacion_.dibujar_texto_bloque_fund(pt.X + Cos(ANGLE) * 20, pt.Y + Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
-                        pto1_RANGO = fundacion_.Punto_dimension1
-                        pto2_RANGO = fundacion_.Punto_dimension2
-                        'If My1Commands.myPalette.ckbx_traslapo.Checked = True Then
-                        '    fundacion_.dibujar_dimesion_funda(ents, Nothing, Nothing, ANGLE)
-                        '    _pto_barra = fundacion_.intesrcion_barra_dimension(New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), fundacion_.punto_dimension1, fundacion_.punto_dimension2)
-                        '    fundacion_.dibujar_circulo_fund(ents, New Point3d(_pto_barra.X - Cos(ANGLE) * 10, _pto_barra.Y - Sin(ANGLE) * 10, 0), My1Commands.casos_dibujar, ANGLE)
-                        'End If
-                    ElseIf tipo = "f11" Or tipo = "f9a_V" Then
-
-
-                        'pt = New Point3d(dt_tabla(0)(0), dt_tabla(0)(1), 0)
-                        'pt2 = pt2
-                        If rbt_inferior_ = True Then
-                            caso_tipo = "f11"
-                        Else
-                            caso_tipo = "f9a_V"
-                        End If
-
-                        'End If
-                        coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, pt, pt2)
-
-                        ' OBTENER P1 Y P2 ORDENADOS
-                        pt = coordenada_PTO_(0)
-                        pt2 = coordenada_PTO_(1)
-
-                        fundacion_.modificar_barra_FUNDA(ents, ent, New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), tipo, direccion, 18, 15)
-
-
-                        If direccion = "horizontal_i" Or direccion = "vertical_b" Then
-                            fundacion_.dibujar_texto_bloque_fund(pt.X + Cos(ANGLE) * 20, pt.Y + Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
-                        Else
-                            fundacion_.dibujar_texto_bloque_fund(pt2.X - Cos(ANGLE) * 20, pt2.Y - Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
-                        End If
-
-
-                    ElseIf dt_tabla.Rows.Count <> 0 Then
-                        acPoly.Erase()
-                        GoTo salto1
-                    End If
-                    If ckbx_traslapo_ = True Then
-                        fundacion_.dibujar_dimesion_funda(ents, pt_rango, pt2_rango, ANGLE)
-                        _pto_barra = fundacion_.intesrcion_barra_dimension(New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), fundacion_.Punto_dimension1, fundacion_.Punto_dimension2)
-                        fundacion_.dibujar_circulo_fund(ents, New Point3d(_pto_barra.X - Cos(ANGLE) * 10, _pto_barra.Y - Sin(ANGLE) * 10, 0), casos_dibujar_, ANGLE)
-                    End If
-
-                    Dim split_ As String() = Replace(LCase(CUANTIA), "%%c", "").Split(New [Char]() {"a"c, CChar(vbTab)})
-                    Dim VARIOS_ As New CODIGOS_DATOS()
-                    VARIOS_.addData_PROG_LOSA(fundacion_.Object_poly, fundacion_.Tipo, fundacion_.Punto_final, fundacion_.Punto_inicial, split_(0), fundacion_.Largo_barra_real_fun, 0, split_(1), fundacion_.Orientacion_, fundacion_.Punto_e_losa_real, fundacion_.Punto_e_losa)
-
-                    Dim GRUPO_ As New CODIGOS_GRUPOS()
-                    'crear grupo
-                    GRUPO_.creacion_grupo(ents, grupo_referencia_)
-
-salto1:
-                Else
-                    Dim caso_tipo As String = ""
-                    caso_tipo = "f3"
                     coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, pt, pt2)    ' OBTENER P1 Y P2 ORDENADOS
                     pt = coordenada_PTO_(0)
                     pt2 = coordenada_PTO_(1)
+
+
+                    pto1_barra = New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto)
+                    pto2_barra = New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto)
+                    fundacion_.modificar_barra_FUNDA(ents, ent, pto1_barra, pto2_barra, tipo, "", 18, 15)
+
+
+                    fundacion_.dibujar_texto_bloque_fund(pt.X + Cos(ANGLE) * 20, pt.Y + Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
+                    pto1_RANGO = fundacion_.Punto_dimension1
+                    pto2_RANGO = fundacion_.Punto_dimension2
+                    'If My1Commands.myPalette.ckbx_traslapo.Checked = True Then
+                    '    fundacion_.dibujar_dimesion_funda(ents, Nothing, Nothing, ANGLE)
+                    '    _pto_barra = fundacion_.intesrcion_barra_dimension(New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), fundacion_.punto_dimension1, fundacion_.punto_dimension2)
+                    '    fundacion_.dibujar_circulo_fund(ents, New Point3d(_pto_barra.X - Cos(ANGLE) * 10, _pto_barra.Y - Sin(ANGLE) * 10, 0), My1Commands.casos_dibujar, ANGLE)
+                    'End If
+                ElseIf tipo = "f11" Or tipo = "f9a_V" Then
+
+
+                    'pt = New Point3d(dt_tabla(0)(0), dt_tabla(0)(1), 0)
+                    'pt2 = pt2
+                    If rbt_inferior_ = True Then
+                        caso_tipo = "f11"
+                    Else
+                        caso_tipo = "f9a_V"
+                    End If
+
+                    'End If
+                    coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, pt, pt2)
+
+                    ' OBTENER P1 Y P2 ORDENADOS
+                    pt = coordenada_PTO_(0)
+                    pt2 = coordenada_PTO_(1)
+
+                    fundacion_.modificar_barra_FUNDA(ents, ent, New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), tipo, direccion, 18, 15)
+
+
+                    If direccion = "horizontal_i" Or direccion = "vertical_b" Then
+                        fundacion_.dibujar_texto_bloque_fund(pt.X + Cos(ANGLE) * 20, pt.Y + Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
+                    Else
+                        fundacion_.dibujar_texto_bloque_fund(pt2.X - Cos(ANGLE) * 20, pt2.Y - Sin(ANGLE) * 20, ANGLE, ents, "L=" & fundacion_.Largo_barra_real_fun, CUANTIA, fundacion_.Largo_barra_parcial_fun)
+                    End If
+                ElseIf tipo = "f3" Then
+
+                    'Dim caso_tipo As String = ""
+                    'caso_tipo = "f3"
+                    coordenada_PTO_ = utiles_aux.coordenada_modificar_fun(Nothing, pt, pt2)    ' OBTENER P1 Y P2 ORDENADOS
+                    pt = coordenada_PTO_(0)
+                    pt2 = coordenada_PTO_(1)
+
+                    fundacion_.modificar_barra_FUNDA(ents, ent, New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), tipo, direccion, 18, 15)
 
                     fundacion_.dibujar_texto_bloque_fund(pt.X + Cos(ANGLE) * 20, pt.Y + Sin(ANGLE) * 20, ANGLE, ents, "L=" & Round(pt.DistanceTo(pt2), 0), CUANTIA, "")
 
@@ -889,14 +865,30 @@ salto1:
                         fundacion_.dibujar_circulo_fund(ents, New Point3d(_pto_barra.X - Cos(ANGLE) * 10, _pto_barra.Y - Sin(ANGLE) * 10, 0), casos_dibujar_, ANGLE)
                     End If
                     ents.Add(ent.ObjectId)
-                    Dim split_ As String() = Replace(LCase(CUANTIA), "%%c", "").Split(New [Char]() {"a"c, CChar(vbTab)})
-                    Dim VARIOS_ As New CODIGOS_DATOS()
-                    VARIOS_.addData_PROG_LOSA(ent.ObjectId, caso_tipo, New Point2d(pt2.X, pt2.Y), New Point2d(pt.X, pt.Y), split_(0), pt.DistanceTo(pt2), 0, split_(1), direccion, 0, 0)
 
-                    Dim GRUPO_ As New CODIGOS_GRUPOS()
-                    'crear grupo
-                    GRUPO_.creacion_grupo(ents, grupo_referencia_)
+                Else
+                    acPoly.Erase()
+                    acTrans.Commit()
+                    Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
+                    Application.DocumentManager.MdiActiveDocument.Editor.Regen()
+                    Return
                 End If
+
+                If ckbx_traslapo_ = True Then
+                    fundacion_.dibujar_dimesion_funda(ents, pt_rango, pt2_rango, ANGLE)
+                    _pto_barra = fundacion_.intesrcion_barra_dimension(New Point2d(pt.X + Cos(ANGLE) * recubrimeinto, pt.Y + Sin(ANGLE) * recubrimeinto), New Point2d(pt2.X - Cos(ANGLE) * recubrimeinto, pt2.Y - Sin(ANGLE) * recubrimeinto), fundacion_.Punto_dimension1, fundacion_.Punto_dimension2)
+                    fundacion_.dibujar_circulo_fund(ents, New Point3d(_pto_barra.X - Cos(ANGLE) * 10, _pto_barra.Y - Sin(ANGLE) * 10, 0), casos_dibujar_, ANGLE)
+                End If
+
+
+                Dim split_ As String() = Replace(Replace(Replace(LCase(CUANTIA), "f=", ""), "f'=", ""), "%%c", "").Split(New [Char]() {"a"c, CChar(vbTab)})
+                Dim VARIOS_ As New CODIGOS_DATOS()
+                VARIOS_.addData_PROG_LOSA(fundacion_.Object_poly, fundacion_.Tipo, fundacion_.Punto_final, fundacion_.Punto_inicial, split_(0), fundacion_.Largo_barra_real_fun, 0, split_(1), fundacion_.Orientacion_, fundacion_.Punto_e_losa_real, fundacion_.Punto_e_losa)
+
+                Dim GRUPO_ As New CODIGOS_GRUPOS()
+                'crear grupo
+                GRUPO_.creacion_grupo(ents, grupo_referencia_)
+
 
                 acTrans.Commit()
                 Application.DocumentManager.MdiActiveDocument.Editor.UpdateScreen()
@@ -906,7 +898,8 @@ salto1:
         End Using
     End Sub
 
-    Public Sub aux_dtras_fund(ByVal txt_recub As String, ByVal ckbx_traslapo As Boolean, ByVal grupo_referencia As String, ByVal casos_dibujar As String, ByRef _contenerdorIDOBJ As ObjectIdCollection)
+    Public Sub aux_dtras_fund(ByVal txt_recub As String, ByVal ckbx_traslapo As Boolean, ByVal grupo_referencia As String, ByVal casos_dibujar As String,
+                              ByRef _contenerdorIDOBJ As ObjectIdCollection)
 
         Dim utiles_aux As New utiles
         Dim doc As Document = Application.DocumentManager.MdiActiveDocument
@@ -951,12 +944,15 @@ salto1:
                     Dim acObjId_grup__ As ObjectId()
                     acObjId_grup__ = _planta_agrupa.buscar_grupo(res1.ObjectId)
 
+
+
                     If IsNothing(acObjId_grup__) Then
                         MsgBox("Elemento no agrupado", vbCritical)
                         GoTo final
                     End If
 
-
+                    Dim _TipoBarrasFundacion As TipoBarrasFundacion = New TipoBarrasFundacion()
+                    _TipoBarrasFundacion.Buscar(res1.ObjectId)
                     'Dim atributo As New atributos()
                     'Dim tipo_FUND(9) As String
                     For Each idObj As ObjectId In acObjId_grup__
@@ -1047,7 +1043,7 @@ salto1:
                     Dim direcion_pfin_ini_RANGO As Point3d = utiles_aux.NormalizeDifference(ptoIni_rangoOriginal, ptoFin_rangoOriginal)
 
 
-                    Dim delta_nose As Single = 10 ' este delta se imcopora pq tenai agerga 5 cm a cada lado al crea traslapo, no se pq¡¡¡¡, entonces se agrega delta=0
+                    'Dim delta_nose As Single = 10 ' este delta se imcopora pq tenai agerga 5 cm a cada lado al crea traslapo, no se pq¡¡¡¡, entonces se agrega delta=0
 
                     pto_selec_mouse = utiles_aux.InterseccionPerpendicular(pto_selec_mouse, ptoini_barraOriginal, ptofin_barraOriginal)
 
@@ -1055,6 +1051,7 @@ salto1:
                     Dim distancia_ptoIniRango_InterRangoBarra As Double = pto1_Interseccion_Rango_barra.DistanceTo(ptoIni_rangoOriginal)
 
 
+                    ' para recordad las coordinadad iniciales
                     Dim pMin As Point3d
                     Dim pMax As Point3d
                     Using acView As ViewTableRecord = doc.Editor.GetCurrentView()
@@ -1162,23 +1159,32 @@ salto1:
                     ' largo de la busqueda desde el pto
                     Dim largoBusqueda As Integer = 0
                     ' barra inferior o mas ala izq   (pto fin pt con y menor o x menor)
+                    Dim LArgoMedioTrasalapo As Double = utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0
+
+                    Dim ptoini3_NuevaBarra1 As Point3d
+                    Dim _Intersecciones As Intersecciones = New Intersecciones(pto_selec_mouse, ptoini_barraOriginal)
+                    If (_Intersecciones.EjecutarConCurve(15, 5)) Then
+                        ptoini3_NuevaBarra1 = _Intersecciones.P2_interseccion_menosRecub
+                    Else
+                        ptoini3_NuevaBarra1 = ptoini_barraOriginal
+                    End If
+
+                    Dim ptofin3_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
 
 
-                    Dim LArgo As Double = utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0 + delta_nose
-                    Dim ptoini3_NuevaBarra1 As Point3d = ptoini_barraOriginal.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)  ' New Point3d(pt1.X + Cos(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), pt1.Y + Sin(angulobarra3) * (utiles_aux.largo_traslapo(tipo_barra(1)) / 2 + delta_nose), 0)
-                    Dim ptofin3_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo) '   New Point3d(ptofin3.X - Cos(angulobarra3) * largoBusqueda, ptofin3.Y - Sin(angulobarra3) * largoBusqueda, 0)
-
+                    ' buscar tipo izq
+                    Dim _TipoTraslapo As TipoTraslapo = New TipoTraslapo()
+                    _TipoTraslapo.ObtenerTiposIzquierdo(datos_losa2(0), datos_losa2(2))
 
                     Dim PuntoMedio_NuevaBarra1 = New Point3d((ptofin3_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin3_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
 
-
-
                     Dim ptoFinal_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
                     Dim ptoInicial_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
-                    Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
+                    'Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
-                    aux__barra_manual(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
-                                      tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
+                    aux__barra_manual2(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
+                                      _TipoTraslapo.Tipo_direccion, _TipoTraslapo.Tipo_losa, txt_recub, False,
+                                      ckbx_traslapo, casos_dibujar, grupo_referencia, 0)
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     acObjIdColl_borra_ss.Clear()
@@ -1267,11 +1273,25 @@ salto1:
                     'End If
                     FUNDACION_.Punto_cua_losa = tipo_losa_f(0)
 
-                    Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    'Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
+                    'ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
+
+                    Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Add(-direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
+                    ' subir 5cm para diferenciar traslapo
                     ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
-                    Dim ptofin3_NuevaBarra2 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgo)
+                    Dim ptofin3_NuevaBarra2 As Point3d
+                    Dim _Intersecciones2 As Intersecciones = New Intersecciones(pto_selec_mouse, ptofin_barraOriginal)
+                    If (_Intersecciones2.EjecutarConCurve(15, 5)) Then
+                        ptofin3_NuevaBarra2 = _Intersecciones2.P2_interseccion_menosRecub
+                    Else
+                        ptofin3_NuevaBarra2 = ptofin_barraOriginal
+                    End If
+                    ' subir 5cm para diferenciar traslapo
                     ptofin3_NuevaBarra2 = ptofin3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
+
+                    'Dim ptofin3_NuevaBarra2 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
+                    'ptofin3_NuevaBarra2 = ptofin3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
                     Dim PuntoMedio_NuevaBarra2 = New Point3d((ptofin3_NuevaBarra2.X + ptoini3_NuevaBarra2.X) / 2, (ptofin3_NuevaBarra2.Y + ptoini3_NuevaBarra2.Y) / 2, 0)
 
@@ -1281,8 +1301,8 @@ salto1:
                     Dim dista_d2 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
 
-                    aux__barra_manual(ptofin3_NuevaBarra2, ptoini3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.Punto_cua_losa,
-                                      tipo_direccion, tipo_losa, txt_recub, ckbx_traslapo, grupo_referencia, casos_dibujar)
+                    aux__barra_manual2(ptoini3_NuevaBarra2, ptofin3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.Punto_cua_losa,
+                                      tipo_direccion, tipo_losa, txt_recub, False, ckbx_traslapo, casos_dibujar, grupo_referencia, 0)
 
 
                     utiles_aux.Zoom(pMin, pMax, New Point3d(), 1)
