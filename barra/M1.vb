@@ -1169,20 +1169,20 @@ salto2:
                         ptoini3_NuevaBarra1 = ptoini_barraOriginal
                     End If
 
-                    Dim ptofin3_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
+                    Dim ptofin_NuevaBarra1 As Point3d = pto_selec_mouse.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
 
 
                     ' buscar tipo izq
                     Dim _TipoTraslapo As TipoTraslapo = New TipoTraslapo()
                     _TipoTraslapo.ObtenerTiposIzquierdo(datos_losa2(0), datos_losa2(2))
 
-                    Dim PuntoMedio_NuevaBarra1 = New Point3d((ptofin3_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin3_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
+                    Dim PuntoMedio_NuevaBarra1 = New Point3d((ptofin_NuevaBarra1.X + ptoini3_NuevaBarra1.X) / 2, (ptofin_NuevaBarra1.Y + ptoini3_NuevaBarra1.Y) / 2, 0)
 
                     Dim ptoFinal_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
                     Dim ptoInicial_Rango1 As Point3d = PuntoMedio_NuevaBarra1.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
                     'Dim dista_d1 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
-                    aux__barra_manual2(ptoini3_NuevaBarra1, ptofin3_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
+                    aux__barra_manual2(ptoini3_NuevaBarra1, ptofin_NuevaBarra1, ptoInicial_Rango1, ptoFinal_Rango1, FUNDACION_.Punto_cua_losa,
                                       _TipoTraslapo.Tipo_direccion, _TipoTraslapo.Tipo_losa, txt_recub, False,
                                       ckbx_traslapo, casos_dibujar, grupo_referencia, 0)
 
@@ -1276,9 +1276,9 @@ salto2:
                     'Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Subtract(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
                     'ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
-                    Dim ptoini3_NuevaBarra2 As Point3d = pto_selec_mouse.Add(-direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
+                    Dim ptoini_NuevaBarra2 As Point3d = pto_selec_mouse.Add(-direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
                     ' subir 5cm para diferenciar traslapo
-                    ptoini3_NuevaBarra2 = ptoini3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
+                    ptoini_NuevaBarra2 = ptoini_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
                     Dim ptofin3_NuevaBarra2 As Point3d
                     Dim _Intersecciones2 As Intersecciones = New Intersecciones(pto_selec_mouse, ptofin_barraOriginal)
@@ -1293,7 +1293,7 @@ salto2:
                     'Dim ptofin3_NuevaBarra2 As Point3d = ptofin_barraOriginal.Add(direcion_pfin_Ini_BARRA.GetAsVector() * LArgoMedioTrasalapo)
                     'ptofin3_NuevaBarra2 = ptofin3_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 5)
 
-                    Dim PuntoMedio_NuevaBarra2 = New Point3d((ptofin3_NuevaBarra2.X + ptoini3_NuevaBarra2.X) / 2, (ptofin3_NuevaBarra2.Y + ptoini3_NuevaBarra2.Y) / 2, 0)
+                    Dim PuntoMedio_NuevaBarra2 = New Point3d((ptofin3_NuevaBarra2.X + ptoini_NuevaBarra2.X) / 2, (ptofin3_NuevaBarra2.Y + ptoini_NuevaBarra2.Y) / 2, 0)
 
                     Dim ptoFinal_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoFinRango_InterRangoBarra)
                     Dim ptoInicial_Rango2 As Point3d = PuntoMedio_NuevaBarra2.Add(-direcion_pfin_ini_RANGO.GetAsVector() * distancia_ptoIniRango_InterRangoBarra)
@@ -1301,8 +1301,16 @@ salto2:
                     Dim dista_d2 As Single = _currentPoint_aux.DistanceTo(pto1_Interseccion_Rango_barra)
 
 
-                    aux__barra_manual2(ptoini3_NuevaBarra2, ptofin3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.Punto_cua_losa,
+                    aux__barra_manual2(ptoini_NuevaBarra2, ptofin3_NuevaBarra2, ptoInicial_Rango2, ptoFinal_Rango2, FUNDACION_.Punto_cua_losa,
                                       tipo_direccion, tipo_losa, txt_recub, False, ckbx_traslapo, casos_dibujar, grupo_referencia, 0)
+
+                    ' crear dimension 
+
+                    Dim pt1 As Point3d = ptofin_NuevaBarra1.Add(direcion_pfin_ini_RANGO.GetAsVector() * 15)
+                    Dim pt2 As Point3d = ptoini_NuevaBarra2.Add(direcion_pfin_ini_RANGO.GetAsVector() * 10)
+                    Dim ptoDIme As Point3d = pt1.Add(pt2.GetAsVector()) / 2D
+                    Dim dimension_ As New dimensiones
+                    dimension_.DrawAlignDimension(db, tr, pt1, pt2, ptoDIme, "50")
 
 
                     utiles_aux.Zoom(pMin, pMax, New Point3d(), 1)
