@@ -97,6 +97,18 @@ Public Class FUNDA
         DataGridView_largoPata.Rows.Add("50", "32")
         DataGridView_largoPata.Rows.Add("50", "36")
 
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(8), "8")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(10), "10")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(12), "12")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(16), "16")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(18), "18")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(22), "22")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(25), "25")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(28), "28")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(32), "32")
+        DataGridView_largoEmpalme.Rows.Add(utiles_aux.largo_traslapo(36), "36")
+
+
         If True Then caso_m1.aux_reescribir_barras(My1Commands.acObjIdColl_GENERAL, "all_rev")
 
 

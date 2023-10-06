@@ -911,8 +911,11 @@ salto2:
         End Using
     End Sub
 
-    Public Sub aux_dtras_fund(ByVal txt_recub As String, ByVal ckbx_traslapo As Boolean, ByVal grupo_referencia As String, ByVal casos_dibujar As String,
+    Public Sub aux_dtras_fund(ByVal panel As FUNDA, ByVal grupo_referencia As String, ByVal casos_dibujar As String,
                               ByRef _contenerdorIDOBJ As ObjectIdCollection)
+        Dim txt_recub As String = panel.txt_recub.Text
+        Dim ckbx_traslapo As Boolean = panel.ckbx_traslapo.Checked
+
 
         Dim utiles_aux As New utiles
         Dim doc As Document = Application.DocumentManager.MdiActiveDocument
@@ -1172,7 +1175,7 @@ salto2:
                     ' largo de la busqueda desde el pto
                     Dim largoBusqueda As Integer = 0
                     ' barra inferior o mas ala izq   (pto fin pt con y menor o x menor)
-                    Dim LArgoMedioTrasalapo As Double = utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0
+                    Dim LArgoMedioTrasalapo As Double = Util.ObtenerValorDataGrid(panel.DataGridView_largoEmpalme, tipo_barra(1), 1, 0) / 2 'utiles_aux.largo_traslapo(tipo_barra(1)) / 2.0
 
                     Dim ptoini3_NuevaBarra1 As Point3d
                     Dim _Intersecciones As Intersecciones = New Intersecciones(pto_selec_mouse, ptoini_barraOriginal)

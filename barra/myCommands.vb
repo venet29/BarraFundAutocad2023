@@ -524,7 +524,7 @@ salto:
         '*************************
 
         Dim caso_m1 As New M1
-        caso_m1.aux_dtras_fund(My1Commands.myPalette.txt_recub.Text, My1Commands.myPalette.ckbx_traslapo.Checked, My1Commands.grupo_referencia, My1Commands.casos_dibujar, My1Commands._contenerdorIDOBJ)
+        caso_m1.aux_dtras_fund(My1Commands.myPalette, My1Commands.grupo_referencia, My1Commands.casos_dibujar, My1Commands._contenerdorIDOBJ)
     End Sub
     'desagruper barras
 
