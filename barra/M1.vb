@@ -13,6 +13,7 @@ Imports ESTRIBOS_MUROS
 Imports FUND_C.Servicio
 Imports FUND_C
 Imports System.Windows.Controls
+Imports Autodesk.AutoCAD.Windows
 
 Public Class M1
     Public espac_pata_caja As Integer = 2
@@ -27,7 +28,19 @@ Public Class M1
     Dim db As New Database(False, True)
     Dim _ManejadorUsuarios As New ManejadorDatos()
 
-    Public Sub aux__barra(ByVal cbx_dia_princiapl As Integer, ByVal ckbx_barra_refuerzo As Boolean, ByVal rbt_inferior As Boolean, ByVal cbx_dia_principal As String, ByVal cbx_sepa_princiapl As String, ByVal ckbx_traslapo As Boolean, ByVal casos_dibujar_ As String, ByVal grupo_referencia_ As String, ByVal txt_recub As String)
+    '    Public Sub aux__barra(ByVal cbx_dia_princiapl As Integer, ByVal ckbx_barra_refuerzo As Boolean, ByVal rbt_inferior As Boolean, ByVal cbx_dia_principal As String, ByVal cbx_sepa_princiapl As String, ByVal ckbx_traslapo As Boolean, ByVal casos_dibujar_ As String, ByVal grupo_referencia_ As String, ByVal txt_recub As String)
+    Public Sub aux__barra(ByVal panel As FUNDA, ByVal casos_dibujar_ As String, ByVal grupo_referencia_ As String)
+
+        Dim cbx_dia_princiapl As Integer = panel.cbx_dia_princiapl.Text
+        Dim ckbx_barra_refuerzo As Boolean = panel.ckbx_barra_refuerzo.Checked
+        Dim rbt_inferior As Boolean = panel.rbt_inferior.Checked
+        Dim cbx_dia_principal As String = panel.cbx_dia_princiapl.Text
+        Dim cbx_sepa_princiapl As String = panel.cbx_sepa_princiapl.Text
+        Dim ckbx_traslapo As Boolean = panel.ckbx_traslapo.Checked
+        ' Dim casos_dibujar_ As String
+        ' Dim grupo_referencia_ As String
+        Dim txt_recub As String = panel.txt_recub.Text
+        Dim Dataggridpatas As System.Windows.Forms.DataGridView = panel.DataGridView_largoPata
         ' Obtener el documento y la base de datos actuales
         Dim acDoc As Document = Application.DocumentManager.MdiActiveDocument
         Dim acCurDb As Database = acDoc.Database
@@ -73,31 +86,31 @@ Public Class M1
 
 
 
-            Dim patalargo
+            Dim patalargo = Util.ObtenerValorDataGrid(Dataggridpatas, cbx_dia_princiapl, 1, 0)
 
-            Select Case cbx_dia_princiapl
+            'Select Case cbx_dia_princiapl
 
-                Case 8
-                    patalargo = 20
-                Case 10
-                    patalargo = CStr(20)
-                Case 12
-                    patalargo = CStr(20)
-                Case 16
-                    patalargo = CStr(20)
-                Case 18
-                    patalargo = CStr(25)
-                Case 22
-                    patalargo = CStr(30)
-                Case 25
-                    patalargo = CStr(40)
-                Case 28
-                    patalargo = CStr(40)
-                Case 32
-                    patalargo = CStr(50)
-                Case Else
-                    patalargo = CStr(50)
-            End Select
+            '    Case 8
+            '        patalargo = 20
+            '    Case 10
+            '        patalargo = CStr(20)
+            '    Case 12
+            '        patalargo = CStr(20)
+            '    Case 16
+            '        patalargo = CStr(20)
+            '    Case 18
+            '        patalargo = CStr(25)
+            '    Case 22
+            '        patalargo = CStr(30)
+            '    Case 25
+            '        patalargo = CStr(40)
+            '    Case 28
+            '        patalargo = CStr(40)
+            '    Case 32
+            '        patalargo = CStr(50)
+            '    Case Else
+            '        patalargo = CStr(50)
+            'End Select
 
 
             acObjIdColl_borra_v2.Clear()

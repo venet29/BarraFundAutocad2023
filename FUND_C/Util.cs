@@ -9,6 +9,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.EditorInput;
 using WinForms = System.Windows.Forms;
 using System.Diagnostics;
+//using System.Windows.Forms;
 
 namespace FUND_C
 {
@@ -342,6 +343,18 @@ namespace FUND_C
             return new Point3d(diffVector.X / magnitude, diffVector.Y / magnitude,0);
         }
 
-
+        //columnabuscar=0  busca en la primera colmna 
+        //columnaResultado=1 devuleve resultado de la columna 1
+        public static string ObtenerValorDataGrid(System.Windows.Forms.DataGridView dataGridView, string searchValue, int columnabuscar, int columnaResultado)
+        {
+            foreach (System.Windows.Forms.DataGridViewRow row in dataGridView.Rows)
+            {
+                if (row.Cells[columnabuscar].Value != null && row.Cells[columnabuscar].Value.ToString() == searchValue)
+                {
+                    return row.Cells[columnaResultado].Value.ToString();
+                }
+            }
+            return string.Empty; // Valor no encontrado
+        }
     }
 }

@@ -75,7 +75,27 @@ Public Class FUNDA
         utiles_aux.Create_ALayer("TEXTO")
 
 
+        'DataGridView_largoPata.Rows.Add("8", "20")
+        'DataGridView_largoPata.Rows.Add("10", "20")
+        'DataGridView_largoPata.Rows.Add("12", "20")
+        'DataGridView_largoPata.Rows.Add("16", "20")
+        'DataGridView_largoPata.Rows.Add("18", "25")
+        'DataGridView_largoPata.Rows.Add("22", "30")
+        'DataGridView_largoPata.Rows.Add("25", "40")
+        'DataGridView_largoPata.Rows.Add("28", "40")
+        'DataGridView_largoPata.Rows.Add("32", "50")
+        'DataGridView_largoPata.Rows.Add("36", "50")
 
+        DataGridView_largoPata.Rows.Add("20", "8")
+        DataGridView_largoPata.Rows.Add("20", "10")
+        DataGridView_largoPata.Rows.Add("20", "12")
+        DataGridView_largoPata.Rows.Add("20", "16")
+        DataGridView_largoPata.Rows.Add("25", "18")
+        DataGridView_largoPata.Rows.Add("30", "22")
+        DataGridView_largoPata.Rows.Add("40", "25")
+        DataGridView_largoPata.Rows.Add("40", "28")
+        DataGridView_largoPata.Rows.Add("50", "32")
+        DataGridView_largoPata.Rows.Add("50", "36")
 
         If True Then caso_m1.aux_reescribir_barras(My1Commands.acObjIdColl_GENERAL, "all_rev")
 

@@ -480,7 +480,7 @@ salto:
         '*************************
 
         Dim caso_m1 As New M1
-        caso_m1.aux__barra(My1Commands.myPalette.cbx_dia_princiapl.Text, My1Commands.myPalette.ckbx_barra_refuerzo.Checked, My1Commands.myPalette.rbt_inferior.Checked, My1Commands.myPalette.cbx_dia_princiapl.Text, My1Commands.myPalette.cbx_sepa_princiapl.Text, My1Commands.myPalette.ckbx_traslapo.Checked, My1Commands.casos_dibujar, My1Commands.grupo_referencia, My1Commands.myPalette.txt_recub.Text)
+        caso_m1.aux__barra(My1Commands.myPalette, My1Commands.casos_dibujar, My1Commands.grupo_referencia)
     End Sub
     <CommandMethod("FF2")>
     Public Sub FF2()

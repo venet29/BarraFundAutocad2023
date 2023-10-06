@@ -24,6 +24,12 @@ Partial Class FUNDA
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FUNDA))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel_exterior = New System.Windows.Forms.Panel()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
@@ -93,6 +99,13 @@ Partial Class FUNDA
         Me.Label9 = New System.Windows.Forms.Label()
         Me.cbx_estribo = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.DataGridView_largoPata = New System.Windows.Forms.DataGridView()
+        Me.Column_largopata = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column_diametro = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.ToolStrip6 = New System.Windows.Forms.ToolStrip()
+        Me.ToolStripLabel4 = New System.Windows.Forms.ToolStripLabel()
         Me.Panel9 = New System.Windows.Forms.Panel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.chbx_desac_reac = New System.Windows.Forms.CheckBox()
@@ -117,6 +130,10 @@ Partial Class FUNDA
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.Panel4.SuspendLayout()
+        CType(Me.DataGridView_largoPata, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ToolStrip6.SuspendLayout()
         Me.Panel9.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.ToolStrip10.SuspendLayout()
@@ -872,6 +889,7 @@ Partial Class FUNDA
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Panel4)
         Me.TabPage2.Controls.Add(Me.Panel9)
         Me.TabPage2.Location = New System.Drawing.Point(4, 4)
         Me.TabPage2.Name = "TabPage2"
@@ -880,6 +898,112 @@ Partial Class FUNDA
         Me.TabPage2.TabIndex = 4
         Me.TabPage2.Text = "Opciones"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Panel4
+        '
+        Me.Panel4.Controls.Add(Me.DataGridView_largoPata)
+        Me.Panel4.Controls.Add(Me.DataGridView1)
+        Me.Panel4.Controls.Add(Me.ToolStrip6)
+        Me.Panel4.Location = New System.Drawing.Point(6, 144)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(259, 249)
+        Me.Panel4.TabIndex = 44
+        '
+        'DataGridView_largoPata
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView_largoPata.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.DataGridView_largoPata.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView_largoPata.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column_largopata, Me.Column_diametro})
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView_largoPata.DefaultCellStyle = DataGridViewCellStyle2
+        Me.DataGridView_largoPata.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DataGridView_largoPata.Location = New System.Drawing.Point(0, 25)
+        Me.DataGridView_largoPata.Name = "DataGridView_largoPata"
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView_largoPata.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.DataGridView_largoPata.Size = New System.Drawing.Size(259, 224)
+        Me.DataGridView_largoPata.TabIndex = 3
+        '
+        'Column_largopata
+        '
+        Me.Column_largopata.HeaderText = "Largo[cm]"
+        Me.Column_largopata.Name = "Column_largopata"
+        '
+        'Column_diametro
+        '
+        Me.Column_diametro.HeaderText = "Ø"
+        Me.Column_diametro.Name = "Column_diametro"
+        '
+        'DataGridView1
+        '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle5
+        Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DataGridView1.Location = New System.Drawing.Point(0, 25)
+        Me.DataGridView1.Name = "DataGridView1"
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView1.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        Me.DataGridView1.Size = New System.Drawing.Size(259, 224)
+        Me.DataGridView1.TabIndex = 2
+        '
+        'ToolStrip6
+        '
+        Me.ToolStrip6.BackgroundImage = CType(resources.GetObject("ToolStrip6.BackgroundImage"), System.Drawing.Image)
+        Me.ToolStrip6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.ToolStrip6.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel4})
+        Me.ToolStrip6.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStrip6.Name = "ToolStrip6"
+        Me.ToolStrip6.Size = New System.Drawing.Size(259, 25)
+        Me.ToolStrip6.TabIndex = 1
+        Me.ToolStrip6.Text = "ToolStrip6"
+        '
+        'ToolStripLabel4
+        '
+        Me.ToolStripLabel4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripLabel4.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolStripLabel4.Name = "ToolStripLabel4"
+        Me.ToolStripLabel4.Size = New System.Drawing.Size(70, 22)
+        Me.ToolStripLabel4.Text = "Largo Patas"
         '
         'Panel9
         '
@@ -967,6 +1091,12 @@ Partial Class FUNDA
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
+        CType(Me.DataGridView_largoPata, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ToolStrip6.ResumeLayout(False)
+        Me.ToolStrip6.PerformLayout()
         Me.Panel9.ResumeLayout(False)
         Me.Panel9.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -1051,6 +1181,11 @@ Partial Class FUNDA
     Friend WithEvents chbx_tr As System.Windows.Forms.CheckBox
     Friend WithEvents txtbx_espesor As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-
-
+    Friend WithEvents Panel4 As Windows.Forms.Panel
+    Friend WithEvents ToolStrip6 As Windows.Forms.ToolStrip
+    Friend WithEvents ToolStripLabel4 As Windows.Forms.ToolStripLabel
+    Friend WithEvents DataGridView1 As Windows.Forms.DataGridView
+    Friend WithEvents DataGridView_largoPata As Windows.Forms.DataGridView
+    Friend WithEvents Column_largopata As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column_diametro As Windows.Forms.DataGridViewTextBoxColumn
 End Class
